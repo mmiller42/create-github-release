@@ -31,43 +31,22 @@ jobs:
           name: Build
           command: npm run build
       - run:
+          name: Test
+          command: npm test
+      - run:
           name: Update lockfile
           command: greenkeeper-lockfile-update
       - run:
           name: Upload lockfile
           command: greenkeeper-lockfile-upload
-
-  test:
-    docker:
-      - image: circleci/node:latest
-    working_directory: ~/create-github-release
-    steps:
-      - run:
-          name: Test
-          command: npm test
-
-  deploy:
-    machine:
-      enabled: true
-    working_directory: ~/create-github-release
-    steps:
-      - run:
-          name: Publish to npm
-          command: npm publish
-
-workflows:
-  version: 2
-  build-test-deploy:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
       - deploy:
-          requires:
-            - test
-          filters:
-            tags:
-              only: /^v[0-9]\+\.[0-9]\+\.[0-9]\+$/
-            branches:
-              ignore: /.*/
+          name: Publish
+          command: |
+            export TAG="v$(git log -1 --pretty=%B)"
+            if echo $TAG | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
+              npm publish
+              npm run build:scripts
+              node .circleci/lib/index.js
+            else
+              echo "No tag pushed, skipping deploy"
+            fi
