@@ -1,6 +1,6 @@
 {
 	"name": "create-github-release",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Tool for generating GitHub releases after publishing a module.",
 	"keywords": [
 		"github",
@@ -15,7 +15,7 @@
 		"postpublish": "lib/cli.js $TAG",
 		"precommit": "lint-staged",
 		"prettier": "prettier --write 'src/**/*.{js,json}'",
-    "test": "exit 0",
+		"test": "exit 0",
 		"watch": "npm run build -- --watch"
 	},
 	"lint-staged": {
