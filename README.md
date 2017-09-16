@@ -1,4 +1,6 @@
-# create-github-release [![CircleCI](https://circleci.com/gh/mmiller42/create-github-release.svg?style=svg)](https://circleci.com/gh/mmiller42/create-github-release)
+# create-github-release
+
+[![CircleCI](https://circleci.com/gh/mmiller42/create-github-release.svg?style=svg)](https://circleci.com/gh/mmiller42/create-github-release) [![Greenkeeper badge](https://badges.greenkeeper.io/mmiller42/create-github-release.svg)](https://greenkeeper.io/)
 
 Tool for generating GitHub releases after publishing a module.
 
