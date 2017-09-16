@@ -12,7 +12,7 @@
 	},
 	"scripts": {
 		"build": "rm -rf lib && babel src --out-dir lib --source-maps --copy-files",
-		"postpublish": "create-github-release",
+		"postpublish": "lib/cli.js $TAG",
 		"precommit": "lint-staged",
 		"prettier": "prettier --write 'src/**/*.{js,json}'",
     "test": "exit 0",
