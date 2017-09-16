@@ -1,5 +1,7 @@
 # create-github-release [![CircleCI](https://circleci.com/gh/mmiller42/create-github-release.svg?style=svg)](https://circleci.com/gh/mmiller42/create-github-release)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mmiller42/create-github-release.svg)](https://greenkeeper.io/)
+
 Tool for generating GitHub releases after publishing a module.
 
 Generates a summary of the commits and changes between the given tag and the previously released tag. The previously released tag will always be the tag with the next lesser semantic version, i.e. all tags will be sorted, then a diff will be computed between the given tag and the tag immediately behind it.
