@@ -36,19 +36,20 @@ jobs:
       - run:
           name: Upload lockfile
           command: greenkeeper-lockfile-upload
+
   test:
+    docker:
+      - image: circleci/node:latest
     working_directory: ~/create-github-release
     steps:
       - run:
           name: Test
           command: npm test
+
   deploy:
+    machine:
+      enabled: true
     working_directory: ~/create-github-release
-    filters:
-      tags:
-        only: /^v[0-9]\+\.[0-9]\+\.[0-9]\+$/
-      branches:
-        ignore: /.*/
     steps:
       - run:
           name: Publish to npm
@@ -65,3 +66,8 @@ workflows:
       - deploy:
           requires:
             - test
+          filters:
+            tags:
+              only: /^v[0-9]\+\.[0-9]\+\.[0-9]\+$/
+            branches:
+              ignore: /.*/
