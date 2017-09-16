@@ -1,0 +1,67 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/create-github-release
+    steps:
+      - checkout
+      - run:
+          name: Authenticate to npm registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run:
+          name: Update npm
+          command: |
+            npm install npm@latest --no-save &&
+            sudo rm -rf /usr/local/lib/node_modules/npm &&
+            sudo mv node_modules/npm /usr/local/lib/node_modules/npm
+      - run:
+          name: Install greenkeeper-lockfile
+          command: sudo npm install -g greenkeeper-lockfile@1
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Update lockfile
+          command: greenkeeper-lockfile-update
+      - run:
+          name: Upload lockfile
+          command: greenkeeper-lockfile-upload
+  test:
+    working_directory: ~/create-github-release
+    steps:
+      - run:
+          name: Test
+          command: npm test
+  deploy:
+    working_directory: ~/create-github-release
+    filters:
+      tags:
+        only: /^v[0-9]\+\.[0-9]\+\.[0-9]\+$/
+      branches:
+        ignore: /.*/
+    steps:
+      - run:
+          name: Publish to npm
+          command: npm publish
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - test

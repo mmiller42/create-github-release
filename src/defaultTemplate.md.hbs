@@ -1,0 +1,47 @@
+# [What's New in {{newTag.name}}]({{{compareUrl}}})
+
+This is a summary of the differences between [{{newTag.name}}]({{{newTag.url}}}) and [{{previousTag.name}}]({{{previousTag.url}}}).
+
+## Pull Requests
+
+<details>
+<summary><strong>Show pull requests</strong></summary>
+
+| Title | Author | Merged |
+| :---- | :----: | :----- |
+{{#pullRequests}}
+| [**#{{number}}**]({{{url}}})<br>{{title}} | [![{{author.name}}]({{{avatarUrl}}})]({{{author.url}}}) | {{{formattedDate}}} |
+{{/pullRequests}}
+</details>
+
+## Commits
+
+<details>
+<summary><strong>Show commits</strong></summary>
+
+| SHA  | Author | Committed | Message |
+| :--- | :----: | :-------- | :------ |
+{{#commits}}
+| [`{{{id}}}`]({{{url}}}) | [![{{author.name}}]({{{avatarUrl}}})]({{{author.url}}}) | {{{formattedDate}}} | {{{message}}} |
+{{/commits}}
+</details>
+
+## Changed files
+
+<details>
+<summary><strong>Show changed files</strong></summary>
+
+{{#files}}
+#### {{#icon}}{{.}} {{/icon}}[`{{{filename}}}`]({{{url}}})
+
+{{#diff}}
+```diff
+{{{.}}}
+```
+{{/diff}}
+{{^diff}}
+*Inline diff not displayed. [View the whole file]({{{url}}})*
+{{/diff}}
+
+{{/files}}
+</details>
