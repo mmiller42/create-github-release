@@ -1,5 +1,3 @@
-import 'babel-polyfill'
-
 import path from 'path'
 import { readFile as _readFile } from 'fs'
 import promisify from 'es6-promisify'
@@ -12,10 +10,10 @@ import { asc as sortVersions } from 'semver-sort'
 const readFile = promisify(_readFile)
 const templateCache = {}
 
-export const DEFAULT_TEMPLATE = path.resolve(__dirname, 'defaultTemplate.md.hbs')
-export const NO_PREVIOUS_RELEASE = new Error('No previous release found')
+const DEFAULT_TEMPLATE = path.resolve(__dirname, 'defaultTemplate.md.hbs')
+const NO_PREVIOUS_RELEASE = new Error('No previous release found')
 
-export default async config => {
+const createGitHubRelease = async config => {
   if (!isObject(config)) {
     throw new Error('config must be an object')
   }
@@ -98,6 +96,11 @@ export default async config => {
 
   return await createRelease(gitHub, { owner, repo, newTag, body })
 }
+
+createGitHubRelease.DEFAULT_TEMPLATE = DEFAULT_TEMPLATE
+createGitHubRelease.NO_PREVIOUS_RELEASE = NO_PREVIOUS_RELEASE
+
+export default createGitHubRelease
 
 const fetchTags = async (gitHub, { owner, repo, tag }) => {
   const { data } = await gitHub.gitdata.getTags({ owner, repo })
