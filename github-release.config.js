@@ -6,7 +6,7 @@ const EXTS_TO_SHOW = ['.css', '.html', 'js', '.json', '.jsx', '.md', '.scss', '.
 module.exports = {
 	authenticateOptions: {
 		type: 'oauth',
-		token: process.env.GIT_OAUTH_TOKEN,
+		token: process.env.GH_TOKEN,
 	},
 	owner: 'mmiller42',
 	repo: 'create-github-release',
