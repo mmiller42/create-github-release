@@ -1,4 +1,4 @@
-# create-github-release
+# create-github-release [![CircleCI](https://circleci.com/gh/mmiller42/create-github-release.svg?style=svg)](https://circleci.com/gh/mmiller42/create-github-release)
 
 Tool for generating GitHub releases after publishing a module.
 
