@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import path from 'path'
 import parseArgs from 'minimist'
 import cosmiconfig from 'cosmiconfig'
