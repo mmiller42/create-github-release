@@ -145,6 +145,7 @@ const fetchDiff = async (gitHub, { owner, repo, newTag, previousTag }) => {
       url: file.blob_url,
       status: file.status,
       changes: file.changes,
+      lines: file.patch ? file.patch.split('\n').length : null,
       diff: file.patch || null,
     })),
   }
