@@ -1,6 +1,6 @@
 {
   "name": "create-github-release",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Tool for generating GitHub releases after publishing a module.",
   "keywords": [
     "github",
