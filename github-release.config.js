@@ -1,7 +1,7 @@
 const path = require('path')
 
 const MAX_LINES_TO_SHOW = 80
-const EXTS_TO_SHOW = ['.css', '.html', 'js', '.json', '.jsx', '.md', '.scss', '.yml']
+const EXTS_TO_SHOW = ['.css', '.html', '.js', '.json', '.jsx', '.md', '.scss', '.yml']
 
 module.exports = {
   authenticateOptions: {
