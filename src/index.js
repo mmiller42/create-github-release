@@ -33,6 +33,7 @@ const createGitHubRelease = async config => {
       templateProps: 'object',
       showDiff: 'function',
       apiOptions: 'object',
+      preview: 'boolean',
     },
     (type, property) => {
       const value = config[property]
@@ -54,6 +55,7 @@ const createGitHubRelease = async config => {
     templateProps = {},
     showDiff = () => true,
     apiOptions = {},
+    preview = false,
   } = config
 
   let render
@@ -93,6 +95,10 @@ const createGitHubRelease = async config => {
     files,
     pullRequests,
   })
+
+  if (preview) {
+    return body
+  }
 
   return await createRelease(gitHub, { owner, repo, newTag, body })
 }

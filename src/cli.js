@@ -9,6 +9,9 @@ const run = async () => {
   const [, , ...argv] = process.argv
   const args = parseArgs(argv)
   const configPath = args.config ? path.resolve(args.config) : null
+  const preview = Boolean(
+    args.preview && !['false', '0', 'off', 'no'].includes(args.preview.toLowerCase())
+  )
   const tags = args._
   if (tags.length === 0) {
     throw new Error('No tags provided')
@@ -36,8 +39,8 @@ const run = async () => {
   return await Promise.all(
     tags.map(async tag => {
       try {
-        const url = await createRelease({ ...config, tag })
-        console.log(`Release ${tag} published at ${url}`)
+        const result = await createRelease({ ...config, preview, tag })
+        console.log(preview ? result : `Release ${tag} published at ${result}`)
       } catch (err) {
         if (err === NO_PREVIOUS_RELEASE) {
           process.emitWarning(err)

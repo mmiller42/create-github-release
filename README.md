@@ -15,12 +15,14 @@ npm install --save-dev create-github-release
 ## CLI
 
 ```
-create-github-release [--config=<configPath>] <tag1> [<tag2>...]
+create-github-release [--config=<configPath>] [--preview=true] <tag1> [<tag2>...]
 ```
 
 The CLI tool requires you to define a configuration file in your repository. By default, it will look for a file in your repository root called `github-release.config.js`.
 
 You may also specify a different path by using the `--config` option.
+
+If you provide the `--preview=true` option, the release notes will be echoed to stdout instead of saved.
 
 ### Configuration
 
@@ -62,11 +64,12 @@ You can also use create-github-release programmatically by importing it into you
 
 ### Configuration
 
-This module exports a function which accepts all the same arguments as the configuration file detailed above, in addition to the `tag` property:
+This module exports a function which accepts all the same arguments as the configuration file detailed above, in addition to the `tag` and `preview` properties:
 
-| Property | Type   | Description         | Default    |
-| -------- | ------ | ------------------- | ---------- |
-| `tag`    | string | The tag to release. | *Required* |
+| Property  | Type    | Description                                                         | Default    |
+| --------- | ------- | ------------------------------------------------------------------- | ---------- |
+| `tag`     | string  | The tag to release.                                                 | *Required* |
+| `preview` | boolean | If true, resolves with the release notes and does not publish them. | `false`    |
 
 ### Example
 
