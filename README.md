@@ -15,7 +15,7 @@ npm install --save-dev create-github-release
 ## CLI
 
 ```
-create-github-release [--config=<configPath>] [--preview=true] <tag1> [<tag2>...]
+create-github-release [--config=<configPath>] [--preview=true] [--overwrite=true] <tag1> [<tag2>...]
 ```
 
 The CLI tool requires you to define a configuration file in your repository. By default, it will look for a file in your repository root called `github-release.config.js`.
@@ -23,6 +23,8 @@ The CLI tool requires you to define a configuration file in your repository. By 
 You may also specify a different path by using the `--config` option.
 
 If you provide the `--preview=true` option, the release notes will be echoed to stdout instead of saved.
+
+If you provide the `--overwrite=true` option, it is equivalent to setting `overwrite` to true (see [Configuration](#configuration)).
 
 ### Configuration
 
@@ -38,6 +40,7 @@ The configuration file must export an object, which can have the following prope
 | `render`              | function | A function to manually render the release notes, instead of using Mustache.                                           | [`Mustache.render`](https://github.com/janl/mustache.js) |
 | `showDiff`            | function | A function that accepts a file object and determines whether the diff should be rendered in the template.             | `() => true`                                             |
 | `apiOptions`          | object   | Additional options to provide the [`node-github`](https://github.com/mikedeboer/node-github) constructor.             | `{}`                                                     |
+| `overwrite`           | boolean  | If true, will overwrite existing GitHub release notes, if any. By default, the script fails if notes already exist.   | `false`                                                  |
 
 ### Example
 

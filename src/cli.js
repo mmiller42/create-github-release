@@ -5,13 +5,15 @@ import parseArgs from 'minimist'
 import cosmiconfig from 'cosmiconfig'
 import createRelease, { NO_PREVIOUS_RELEASE } from './index'
 
+const isTruthy = value =>
+  Boolean(value && !['false', '0', 'off', 'no'].includes(value.toLowerCase()))
+
 const run = async () => {
   const [, , ...argv] = process.argv
   const args = parseArgs(argv)
   const configPath = args.config ? path.resolve(args.config) : null
-  const preview = Boolean(
-    args.preview && !['false', '0', 'off', 'no'].includes(args.preview.toLowerCase())
-  )
+  const preview = isTruthy(args.preview)
+  const overwrite = isTruthy(args.overwrite)
   const tags = args._
   if (tags.length === 0) {
     throw new Error('No tags provided')
@@ -39,7 +41,12 @@ const run = async () => {
   return await Promise.all(
     tags.map(async tag => {
       try {
-        const result = await createRelease({ ...config, preview, tag })
+        const result = await createRelease({
+          ...config,
+          preview,
+          overwrite: overwrite || config.overwrite,
+          tag,
+        })
         console.log(preview ? result : `Release ${tag} published at ${result}`)
       } catch (err) {
         if (err === NO_PREVIOUS_RELEASE) {

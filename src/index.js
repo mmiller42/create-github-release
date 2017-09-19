@@ -2,6 +2,7 @@ import path from 'path'
 import { readFile as _readFile } from 'fs'
 import promisify from 'es6-promisify'
 import forEach from 'lodash.foreach'
+import get from 'lodash.get'
 import isObject from 'lodash.isobject'
 import GitHubApi from 'github'
 import Mustache from 'mustache'
@@ -34,6 +35,7 @@ const createGitHubRelease = async config => {
       showDiff: 'function',
       apiOptions: 'object',
       preview: 'boolean',
+      overwrite: 'boolean',
     },
     (type, property) => {
       const value = config[property]
@@ -56,6 +58,7 @@ const createGitHubRelease = async config => {
     showDiff = () => true,
     apiOptions = {},
     preview = false,
+    overwrite = false,
   } = config
 
   let render
@@ -100,7 +103,7 @@ const createGitHubRelease = async config => {
     return body
   }
 
-  return await createRelease(gitHub, { owner, repo, newTag, body })
+  return await createRelease(gitHub, { owner, repo, newTag, body, overwrite })
 }
 
 createGitHubRelease.DEFAULT_TEMPLATE = DEFAULT_TEMPLATE
@@ -271,13 +274,48 @@ const renderBody = async ({
     ...templateProps,
   })
 
-const createRelease = async (gitHub, { owner, repo, newTag, body }) => {
-  const { data } = await gitHub.repos.createRelease({
-    owner,
-    repo,
-    tag_name: newTag,
-    name: newTag,
-    body,
-  })
-  return data.html_url
+const createRelease = async (gitHub, { owner, repo, newTag, body, overwrite }) => {
+  try {
+    const { data } = await gitHub.repos.createRelease({
+      owner,
+      repo,
+      tag_name: newTag,
+      name: newTag,
+      body,
+    })
+
+    return data.html_url
+  } catch (err) {
+    if (!overwrite) {
+      throw err
+    }
+
+    let message
+    try {
+      message = JSON.parse(err.message)
+    } catch (parseEr) {
+      throw err
+    }
+
+    if (get(message, 'errors[0].code') === 'already_exists') {
+      const { data: existingRelease } = await gitHub.repos.getReleaseByTag({
+        owner,
+        repo,
+        tag: newTag,
+      })
+
+      const { data } = await gitHub.repos.editRelease({
+        id: existingRelease.id,
+        owner,
+        repo,
+        tag_name: newTag,
+        name: newTag,
+        body,
+      })
+
+      return data.html_url
+    } else {
+      throw err
+    }
+  }
 }
