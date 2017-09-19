@@ -254,7 +254,7 @@ const renderBody = async ({
     })),
     files: files.map(file => ({
       ...file,
-      diff: file.diff && showDiff(file) && file.diff.replace(/`/g, '\\`'),
+      diff: file.diff && showDiff(file) && file.diff.replace(/```/g, '​```'),
     })),
     pullRequests,
     icon() {
