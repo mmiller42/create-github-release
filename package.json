@@ -52,7 +52,7 @@
     "babel-runtime": "^6.26.0",
     "cosmiconfig": "^3.0.0",
     "es6-promisify": "^5.0.0",
-    "github": "^11.0.0",
+    "github": "^12.0.5",
     "lodash.foreach": "^4.5.0",
     "lodash.get": "^4.4.2",
     "lodash.isobject": "^3.0.2",
